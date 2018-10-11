@@ -36,7 +36,7 @@ class ElasticsearchEngine extends Engine
     {
         $params['body'] = [];
 
-        $models->each(function($model) use (&$params)
+        $models->each(function ($model) use (&$params)
         {
             $type = $model->searchableAs();
             $index = config('scout.elasticsearch.prefix').$type;
@@ -67,7 +67,7 @@ class ElasticsearchEngine extends Engine
     {
         $params['body'] = [];
 
-        $models->each(function($model) use (&$params)
+        $models->each(function ($model) use (&$params)
         {
             $type = $model->searchableAs();
             $index = config('scout.elasticsearch.prefix').$type;
@@ -113,7 +113,7 @@ class ElasticsearchEngine extends Engine
             'size' => $perPage,
         ]);
 
-       $result['nbPages'] = $result['hits']['total']/$perPage;
+        $result['nbPages'] = $result['hits']['total']/$perPage;
 
         return $result;
     }
@@ -162,8 +162,7 @@ class ElasticsearchEngine extends Engine
         }
 
         if (isset($options['numericFilters']) && count($options['numericFilters'])) {
-            $params['body']['query']['bool']['must'] = array_merge($params['body']['query']['bool']['must'],
-                $options['numericFilters']);
+            $params['body']['query']['bool']['must'] = array_merge($params['body']['query']['bool']['must'], $options['numericFilters']);
         }
 
         if ($builder->callback) {
@@ -213,7 +212,7 @@ class ElasticsearchEngine extends Engine
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return Collection
      */
-    public function map($results, $model)
+    public function map(Builder $builder, $results, $model)
     {
         if ($results['hits']['total'] === 0) {
             return Collection::make();
@@ -222,9 +221,9 @@ class ElasticsearchEngine extends Engine
         $keys = collect($results['hits']['hits'])
                         ->pluck('_id')->values()->all();
 
-        $models = $model->whereIn(
-            $model->getKeyName(), $keys
-        )->get()->keyBy($model->getKeyName());
+        $models = $model->getScoutModelsByIds($builder, $keys)->keyBy(function ($model) {
+            return $model->getScoutKey();
+        });
 
         return collect($results['hits']['hits'])->map(function ($hit) use ($model, $models) {
             return isset($models[$hit['_id']]) ? $models[$hit['_id']] : null;

@@ -1,5 +1,5 @@
 {
-    "name": "baijunyao/laravel-scout-elasticsearch",
+    "name": "sgssxf/laravel-scout-elasticsearch",
     "keywords": ["laravel", "scout", "elasticsearch"],
     "description": "Elasticsearch Driver for Laravel Scout",
     "type": "library",
@@ -11,8 +11,8 @@
         }
     ],
     "require": {
-        "laravel/scout": "~4.0",
-        "elasticsearch/elasticsearch": "~6.0"
+        "laravel/scout": "^5.0",
+        "elasticsearch/elasticsearch": "^6.0"
     },
     "autoload": {
         "psr-4": {
@@ -22,7 +22,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Baijunyao\\LaravelScoutElasticsearch\\ElasticsearchServiceProvider"
+                "sgssxf\\LaravelScoutElasticsearch\\ElasticsearchServiceProvider"
             ]
         }
     }
