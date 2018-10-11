@@ -22,7 +22,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "sgssxf\\LaravelScoutElasticsearch\\ElasticsearchServiceProvider"
+                "Baijunyao\\LaravelScoutElasticsearch\\ElasticsearchServiceProvider"
             ]
         }
     }
